@@ -30,15 +30,47 @@ while validar
     valor_maximo = double(input('¿Cuál es el valor máximo?'));
     valor_minimo = double(input('¿Cuál es el valor mínimo?'));
     
+    
+    
+    
     % --- TODO: Aqui va el algoritmo de la practica
     % --- ...
     
+    
+    figure(1)
+    subplot(2,3,1)
+    histogram(rojo)
+    title('Canal Rojo')
+    
+    subplot(2,3,2)
+    histogram(verde)
+    title('Canal Verde')
+    
+    subplot(2,3,3)
+    histogram(azul)
+    title('Canal Azul')
+    
+    subplot(2,3,4)
+    histogram(nuevoRojo)
+    title('Canal Rojo Ampliado')
+    
+    subplot(2,3,5)
+    histogram(nuevoVerde)
+    title('Canal Verde Ampliado')
+    
+    subplot(2,3,6)
+    histogram(nuevoAzul)
+    title('Canal Azul Ampliado')
+    
+    
+    
+    % --- Calcular de nuevo
     respuesta = input('¿Deseas calcular con otros valores? S/N','s');
     if isempty(respuesta)
         respuesta = 'N';
     end
+    % --- Fin de programa
     if respuesta == 'N' || respuesta == 'n'
         validar = false;
     end
-    
 end
