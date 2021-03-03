@@ -1,3 +1,4 @@
+%EJERCICIOS PRACTICA 1
 img = imread('leocuadro.jpg');
 imge = imread('londres.jpg');
 
