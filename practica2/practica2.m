@@ -20,22 +20,17 @@ img_roja = imagen_1(:,:,1);
 img_verde = imagen_1(:,:,2);
 img_azul = imagen_1(:,:,3);
 
-% --- obtenemos el tamaño de la imagen
-[alto, ancho, color] = size(imagen_1);
-
-
 % --- menu para ingresar los datos
 validar = true;
 while validar
-    valor_maximo = double(input('¿Cuál es el valor máximo?'));
     valor_minimo = double(input('¿Cuál es el valor mínimo?'));
-    
-    
-    
-    
-    % --- TODO: Aqui va el algoritmo de la practica
-    % --- ...
-    
+    valor_maximo = double(input('¿Cuál es el valor máximo?'));
+        
+    % --- realizamos la ampliacion para cada canal
+  
+    img_roja_ampliada = ampliar_histograma(img_roja, valor_minimo, valor_maximo);
+    img_verde_ampliada = ampliar_histograma(img_verde, valor_minimo, valor_maximo);
+    img_azul_ampliada = ampliar_histograma(img_azul, valor_minimo, valor_maximo);
     
     % --- Se muestran en pantalla los histogramas
     figure(2)
@@ -50,15 +45,14 @@ while validar
     histogram(img_azul)
     title('Canal Azul')
     % --- Histogramas ampliados
-    % --- TODO: cambiar la entrada de estos histogramas por los calculados
     subplot(2,3,4)
-    histogram(img_roja)
+    histogram(img_roja_ampliada)
     title('Canal Rojo Ampliado')
     subplot(2,3,5)
-    histogram(img_verde)
+    histogram(img_verde_ampliada)
     title('Canal Verde Ampliado')
     subplot(2,3,6)
-    histogram(img_azul)
+    histogram(img_azul_ampliada)
     title('Canal Azul Ampliado')
     
     % --- Calcular de nuevo
@@ -69,5 +63,52 @@ while validar
     % --- Fin de programa
     if respuesta == 'N' || respuesta == 'n'
         validar = false;
+    end
+    
+    close all
+end
+
+% --- Funciones del programa
+function [min, max] = limites_imagen(imagen)
+    % --- se obtiene el tamaño de la imagen
+    [alto, ancho] = size(imagen);
+    % --- se asigna un valor minimo y maximo default
+    aux_min = imagen(1,1);
+    aux_max = imagen(1,1)+1;
+    % --- recorremos la imagen
+    for i = 1: +1 : alto
+        for j = 1: +1: ancho
+            if imagen(i,j) > aux_max
+                aux_max = imagen(i,j);
+            elseif imagen(i,j) < aux_min
+                aux_min = imagen(i,j);
+            end
+        end
+    end
+    % --- Necesitamos trabajar con doubles (dafault en MatLab),
+    % --- Si no se hace cast da error por estar en diferentes formatos
+    min = double(aux_min);
+    max = double(aux_max);
+end
+
+function resultado = ecuacion_ampliacion(value, min, max, min_ampl, max_ampl)
+    % --- se hace cast al resultado para regresar del tipo uint8
+    resultado = double((((value - min)/(max - min)) * (max_ampl - min_ampl)) + min_ampl);
+    % --- redondeamos al entero mas cercano
+    resultado = round(resultado);
+end
+
+function imagen_ampliada = ampliar_histograma(imagen, min_ampl, max_ampl)
+    % --- inicializamos la imagen
+    imagen_ampliada = imagen;
+    [alto, ancho] = size(imagen);
+    % --- obtenemos el valor maximo y minimo
+    [min, max] = limites_imagen(imagen);
+    % --- recorremos la imagen
+    for i = 1: +1 : alto
+        for j = 1: +1: ancho
+            value = double(imagen(i,j));
+            imagen_ampliada(i,j) = ecuacion_ampliacion(value, min, max, min_ampl, max_ampl);
+        end
     end
 end
