@@ -15,19 +15,21 @@ figure(1)
 imshow(imagen_1)
 title('Imagen Original')
 
-% --- seccionamos la imagen en sus componentes de color
-img_roja = imagen_1(:,:,1);
-img_verde = imagen_1(:,:,2);
-img_azul = imagen_1(:,:,3);
+
 
 % --- menu para ingresar los datos
 validar = true;
 while validar
+    
+    % --- seccionamos la imagen en sus componentes de color
+    img_roja = imagen_1(:,:,1);
+    img_verde = imagen_1(:,:,2);
+    img_azul = imagen_1(:,:,3);
+    
     valor_minimo = double(input('¿Cuál es el valor mínimo?'));
     valor_maximo = double(input('¿Cuál es el valor máximo?'));
         
     % --- realizamos la ampliacion para cada canal
-  
     img_roja_ampliada = ampliar_histograma(img_roja, valor_minimo, valor_maximo);
     img_verde_ampliada = ampliar_histograma(img_verde, valor_minimo, valor_maximo);
     img_azul_ampliada = ampliar_histograma(img_azul, valor_minimo, valor_maximo);
@@ -54,6 +56,13 @@ while validar
     subplot(2,3,6)
     histogram(img_azul_ampliada)
     title('Canal Azul Ampliado')
+    
+    % --- Reconstrucción de la imagen en sus tres canales de color
+    imagen_1(:,:,1)=img_roja_ampliada;
+    imagen_1(:,:,2)=img_verde_ampliada;
+    imagen_1(:,:,3)=img_azul_ampliada;
+    figure(3);
+    imshow(imagen_1);
     
     % --- Calcular de nuevo
     respuesta = input('¿Deseas calcular con otros valores? S/N','s');
