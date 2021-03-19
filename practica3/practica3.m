@@ -14,94 +14,117 @@ imagen_1 = imread ('peppers.png');
 imagen_2 = imagen_1;
 
 
-% -----EJERCICIO 3A
-% --- menu para ingresar los datos
-validar = true;
-while validar
-    
-    % --- seccionamos la imagen en sus componentes de color
-    img_roja = imagen_1(:,:,1);
-    img_verde = imagen_1(:,:,2);
-    img_azul = imagen_1(:,:,3);
-    
-    valor_minimo = double(input('¿Cuál es el valor mínimo?'));
-    valor_maximo = double(input('¿Cuál es el valor máximo?'));
-    
-    % --- realizamos la ecualizacion para cada canal
-    img_roja_ampliada = ampliar_histograma(img_roja, valor_minimo, valor_maximo);
-    img_verde_ampliada= ampliar_histograma(img_verde, valor_minimo, valor_maximo);
-    img_azul_ampliada=  ampliar_histograma(img_azul, valor_minimo, valor_maximo);
-      
-    % --- realizamos la ecualizacion para cada canal
-    img_roja_ecualizada = ecualizar_histograma(img_roja, valor_minimo, valor_maximo);
-    img_verde_ecualizada= ecualizar_histograma(img_verde, valor_minimo, valor_maximo);
-    img_azul_ecualizada = ecualizar_histograma(img_azul, valor_minimo, valor_maximo);
-    
-    % --- Reconstrucción de las imagenes en sus tres canales de color
-    
-    imagen_1(:,:,1)=img_roja_ampliada;
-    imagen_1(:,:,2)=img_verde_ampliada;
-    imagen_1(:,:,3)=img_azul_ampliada;
-    
-    imagen_2(:,:,1)=img_roja_ecualizada;
-    imagen_2(:,:,2)=img_verde_ecualizada;
-    imagen_2(:,:,3)=img_azul_ecualizada;
-    
-    
-    % --- Se muestran en pantalla los histogramas
-    figure(2)
-    % --- Histogramas ampliados
-    subplot(2,4,1)
-    histogram(img_roja_ampliada)
-    title('Canal Rojo Ampliado')
-    subplot(2,4,2)
-    histogram(img_verde_ampliada)
-    title('Canal Verde Ampliado')
-    subplot(2,4,3)
-    histogram(img_azul_ampliada)
-    title('Canal Azul Ampliado')
-    subplot(2,4,4)
-    imshow(imagen_1);
-    title('Imagen ampliada')
-    % --- Histogramas ecualizados
-    subplot(2,4,5)
-    histogram(img_roja_ecualizada)
-    title('Canal Rojo Ecualizado')
-    subplot(2,4,6)
-    histogram(img_verde_ecualizada)
-    title('Canal Verde Ecualizado')
-    subplot(2,4,7)
-    histogram(img_azul_ecualizada)
-    title('Canal Azul Ecualizado')
-    subplot(2,4,8)
-    imshow(imagen_2);
-    title('Imagen ecualizada')
-        
-    % --- Calcular de nuevo
-    respuesta = input('¿Deseas calcular con otros valores? S/N','s');
-    if isempty(respuesta)
-        respuesta = 'N';
-    end
-    % --- Fin de programa
-    if respuesta == 'N' || respuesta == 'n'
-        validar = false;
-    end
-    
-    close all
-end
+% % % -----EJERCICIO 3A
+% % % --- menu para ingresar los datos
+% % validar = true;
+% % while validar
+% %     
+% %     % --- seccionamos la imagen en sus componentes de color
+% %     img_roja = imagen_1(:,:,1);
+% %     img_verde = imagen_1(:,:,2);
+% %     img_azul = imagen_1(:,:,3);
+% %     
+% %     valor_minimo = double(input('¿Cuál es el valor mínimo?'));
+% %     valor_maximo = double(input('¿Cuál es el valor máximo?'));
+% %     
+% %     % --- realizamos la ecualizacion para cada canal
+% %     img_roja_ampliada = ampliar_histograma(img_roja, valor_minimo, valor_maximo);
+% %     img_verde_ampliada= ampliar_histograma(img_verde, valor_minimo, valor_maximo);
+% %     img_azul_ampliada=  ampliar_histograma(img_azul, valor_minimo, valor_maximo);
+% %       
+% %     % --- realizamos la ecualizacion para cada canal
+% %     img_roja_ecualizada = ecualizar_histograma(img_roja, valor_minimo, valor_maximo);
+% %     img_verde_ecualizada= ecualizar_histograma(img_verde, valor_minimo, valor_maximo);
+% %     img_azul_ecualizada = ecualizar_histograma(img_azul, valor_minimo, valor_maximo);
+% %     
+% %     % --- Reconstrucción de las imagenes en sus tres canales de color
+% %     
+% %     imagen_1(:,:,1)=img_roja_ampliada;
+% %     imagen_1(:,:,2)=img_verde_ampliada;
+% %     imagen_1(:,:,3)=img_azul_ampliada;
+% %     
+% %     imagen_2(:,:,1)=img_roja_ecualizada;
+% %     imagen_2(:,:,2)=img_verde_ecualizada;
+% %     imagen_2(:,:,3)=img_azul_ecualizada;
+% %     
+% %     
+% %     % --- Se muestran en pantalla los histogramas
+% %     figure(2)
+% %     % --- Histogramas ampliados
+% %     subplot(2,4,1)
+% %     histogram(img_roja_ampliada)
+% %     title('Canal Rojo Ampliado')
+% %     subplot(2,4,2)
+% %     histogram(img_verde_ampliada)
+% %     title('Canal Verde Ampliado')
+% %     subplot(2,4,3)
+% %     histogram(img_azul_ampliada)
+% %     title('Canal Azul Ampliado')
+% %     subplot(2,4,4)
+% %     imshow(imagen_1);
+% %     title('Imagen ampliada')
+% %     % --- Histogramas ecualizados
+% %     subplot(2,4,5)
+% %     histogram(img_roja_ecualizada)
+% %     title('Canal Rojo Ecualizado')
+% %     subplot(2,4,6)
+% %     histogram(img_verde_ecualizada)
+% %     title('Canal Verde Ecualizado')
+% %     subplot(2,4,7)
+% %     histogram(img_azul_ecualizada)
+% %     title('Canal Azul Ecualizado')
+% %     subplot(2,4,8)
+% %     imshow(imagen_2);
+% %     title('Imagen ecualizada')
+% %         
+% %     % --- Calcular de nuevo
+% %     respuesta = input('¿Deseas calcular con otros valores? S/N','s');
+% %     if isempty(respuesta)
+% %         respuesta = 'N';
+% %     end
+% %     % --- Fin de programa
+% %     if respuesta == 'N' || respuesta == 'n'
+% %         validar = false;
+% %     end
+% %     
+% %     close all
+% % end
 
-% % % -----EJERCICIO 3B
+% % %  -----EJERCICIO 3B
 % % 
-% % img_a=imread ('img1.png');
-% % img_b=imread ('img2.png');
+% % img_b=imread ('img1.png');
+% % img_a=imread ('img2.png');
 % % 
 % % a=rgb2gray(img_a);
 % % b=rgb2gray(img_b);
 % % 
-% % [alto,ancho]=size(b)
+% % [alto,ancho]=size(b);
 % % 
-% % acum_a=getProbabilidadAcumulada(a);
-% % acum_b=getProbabilidadAcumulada(b);
+% % prob_a=getProbabilidadAcumulada(a);
+% % prob_b=getProbabilidadAcumulada(b);
+% % 
+% % figure(1)
+% % imshow(a)
+% % 
+% % figure(2)
+% % imshow(b)
+% % 
+% % 
+% % for i = 1:alto
+% %     for j  = 1:ancho
+% %         nivelgris=b(i,j)+1;
+% %         acumb=prob_b(nivelgris);
+% %         %--- Se itera sobre el acumuladdo de a 
+% %         for k = 1:255
+% %             if acumb>prob_a(k)&& acumb<prob_a(k+1)
+% %                     b(i,j)=k;
+% %                     break;
+% %             end
+% %         end
+% %     end
+% % end
+% % figure(3)
+% % imshow(b);
 
 % --- Funciones del programa
 function [min, max] = limites_imagen(imagen)
@@ -187,5 +210,28 @@ function pAcumGris = getProbabilidadAcumulada(imagen)
     end
     
 end
+
+
+function pGris = getProbabilidad(imagen)
+    [alto,ancho]=size(imagen);
+    nivelesGris=zeros(1,256); % --- N(g)
+    pGris=zeros(1,256);       % --- P(g)
+    
+    % --- Obtencion del histograma N(g)
+    for i = 1:alto
+        for j = 1:ancho
+            indice= imagen(i,j)+1;
+            nivelesGris(indice)= nivelesGris(indice)+1;    
+        end
+    end
+    
+    % --- Obtencionde la probabilidad P(g)
+    for i = 1:256
+        pGris(i)=nivelesGris(i)/(alto*ancho);
+    end
+    
+end
+
+
 
 
