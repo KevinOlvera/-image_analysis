@@ -10,47 +10,54 @@ clear all
 close all
 
 % --- variables - imagen original
-% imagen = imread ('peppers.png');
-% imagen = rgb2gray(imagen);
-% figure(1)
-% imshow(imagen)
-% title('Imagen Original')
-%imagen = [1 1 1 2 7;8 3 2 1 1; 1 3 9 2 1; 1 2 2 3 1; 1 1 1 2 1; 1 2 4 3 5];
+imagen = imread ('peppers.png');
+imagen = rgb2gray(imagen);
 
-imagen = [11 19 27; 19 82 54;21 19 36];
-predictor = [11 19 27; 19 19 22;21 20 20];
-error = imagen - predictor;
 % --- menu para ingresar los datos
 validar = true;
-%while validar
-    % bits = double(input('¿A cúantos bits desea comprimir?'));
-    bits=4;
-
-%    predictor = crear_predictor(imagen)
-%    error = imagen - predictor;
+ 
+while validar
+    bits = double(input('¿A cúantos bits desea comprimir?'));
+    predictor = crear_predictor(imagen);
+    imagen = double(imagen);
+    error = imagen - predictor;
     [min, max] = limites_imagen(error);
-    recta1_meq = obtener_recta1_meq(min,max,bits);
-    
-    meq = matriz_meq(error,recta1_meq);
-    
-    recta2_meq = obtener_recta2_meq(recta1_meq,bits); 
-    
-    meq_1 = matriz_meq_1(meq,recta2_meq);
+      
+    rangos_error = rangos_error_arreglo(min,max,bits);
      
-    mrec = meq_1 + predictor
+    meq = matriz_meq(error,rangos_error);
+       
+    niveles_error = niveles_error_arreglo(rangos_error,bits); 
+       
+    meq_1 = matriz_meq_1(meq, niveles_error);
         
-     % --- Calcular de nuevo
-%     respuesta = input('¿Deseas calcular con otros valores? S/N','s');
-%     if isempty(respuesta)
-%         respuesta = 'N';
-%     end
-%     % --- Fin de programa
-%     if respuesta == 'N' || respuesta == 'n'
-%         validar = false;
-%     end
+    resultante = meq_1 + predictor;
+     
+    s_n = calcular_s_n(imagen, resultante);
     
-    %close all
-% end
+    imagen=uint8(imagen);
+    resultante=uint8(resultante);
+    imagenes = [imagen,resultante];
+     
+    figure(1)
+    imshow(imagenes)
+     
+    disp('s/n = ')
+    disp(s_n);
+    disp('dB')
+        
+    % --- Calcular de nuevo
+    respuesta = input('¿Deseas calcular con otros valores? S/N','s');
+    if isempty(respuesta)
+        respuesta = 'N';
+    end
+    % --- Fin de programa
+    if respuesta == 'N' || respuesta == 'n'
+        validar = false;
+    end
+    
+    close all
+end
 
 % --- Funciones del programa
 function predictor = crear_predictor(imagen)
@@ -70,7 +77,7 @@ function predictor = crear_predictor(imagen)
             else
                 total = 3;
             end
-            predictor(i, j) = uint8(round(sum(segmento_auxiliar(predictor, i, j), 'all')/total));
+            predictor(i, j) = round(sum(segmento_auxiliar(predictor, i, j), 'all')/total);
         end
     end
 end
@@ -125,9 +132,9 @@ function [min, max] = limites_imagen(imagen)
     max = double(aux_max);
 end
 
-function arreglo = obtener_recta1_meq(min,max,bits)
+function arreglo = rangos_error_arreglo(min,max,bits);
     factor = power(2,bits);
-    teta = round((max - min)/factor);
+    teta = (max - min)/factor;
     arreglo = zeros(1,factor+1);
     acum=min;
     for i = 1:factor+1  
@@ -136,12 +143,12 @@ function arreglo = obtener_recta1_meq(min,max,bits)
     end   
 end
 
-function meq = matriz_meq(error,recta_meq)
+function arreglo = matriz_meq(error,niveles_error)
     [alto,ancho]=size(error);
-    meq = zeros(alto,ancho);
+    arreglo = zeros(alto,ancho);
     for i = 1:alto
         for j = 1:ancho
-            meq(i,j)=encontrar_val(error(i,j),recta_meq);
+            arreglo(i,j)=encontrar_val(error(i,j),niveles_error);
         end
     end
 end
@@ -157,11 +164,11 @@ function valor = encontrar_val(val,arr_meq)
     end    
 end
 
-function arreglo = obtener_recta2_meq(recta1_meq,bits)
+function arreglo =  niveles_error_arreglo(rangos_error,bits)
     factor = power(2,bits);
     arreglo = zeros(1,factor);
     for i=1:factor
-        arreglo(i)=(recta1_meq(i)+recta1_meq(i+1))/2;
+        arreglo(i)=(rangos_error(i)+rangos_error(i+1))/2;
     end
 end   
 
@@ -175,4 +182,22 @@ function meq_1 = matriz_meq_1(meq,recta2_meq)
         end
     end
     
+end
+
+function valor = calcular_s_n(original, resultante)
+    
+    [largo,ancho]=size(original);
+    numerador=0;
+    denominador=0;
+    
+    for i = 1:largo
+        for j = 1:ancho
+            or=original(i,j);
+            res=resultante(i,j);
+            numerador=numerador+power(or,2);
+            denominador=denominador+power(or-res,2);
+        end
+    end
+    res=numerador/denominador;
+    valor=10*log10(res);
 end
