@@ -61,10 +61,14 @@ function predictor = crear_predictor(imagen)
     
     for i = 2 : +1 :alto
         for j = 2: +1 :ancho
-            if i == alto || j == ancho
+            if i == alto && j < ancho
+                total = 4;
+            elseif j == 2 && j < ancho
+                total = 5;
+            elseif j < ancho
                 total = 4;
             else
-                total = 5;
+                total = 3;
             end
             predictor(i, j) = uint8(round(sum(segmento_auxiliar(predictor, i, j), 'all')/total));
         end

@@ -90,41 +90,41 @@ imagen_2 = imagen_1;
 % %     close all
 % % end
 
-% % %  -----EJERCICIO 3B
-% % 
-% % img_b=imread ('img1.png');
-% % img_a=imread ('img2.png');
-% % 
-% % a=rgb2gray(img_a);
-% % b=rgb2gray(img_b);
-% % 
-% % [alto,ancho]=size(b);
-% % 
-% % prob_a=getProbabilidadAcumulada(a);
-% % prob_b=getProbabilidadAcumulada(b);
-% % 
-% % figure(1)
-% % imshow(a)
-% % 
-% % figure(2)
-% % imshow(b)
-% % 
-% % 
-% % for i = 1:alto
-% %     for j  = 1:ancho
-% %         nivelgris=b(i,j)+1;
-% %         acumb=prob_b(nivelgris);
-% %         %--- Se itera sobre el acumuladdo de a 
-% %         for k = 1:255
-% %             if acumb>prob_a(k)&& acumb<prob_a(k+1)
-% %                     b(i,j)=k;
-% %                     break;
-% %             end
-% %         end
-% %     end
-% % end
-% % figure(3)
-% % imshow(b);
+%  -----EJERCICIO 3B
+
+img_b=imread ('img1.png');
+img_a=imread ('img2.png');
+
+a=rgb2gray(img_a);
+b=rgb2gray(img_b);
+
+[alto,ancho]=size(b);
+
+prob_a=getProbabilidadAcumulada(a);
+prob_b=getProbabilidadAcumulada(b);
+
+figure(1)
+imshow(a)
+
+figure(2)
+imshow(b)
+
+
+for i = 1:alto
+    for j  = 1:ancho
+        nivelgris=b(i,j)+1;
+        acumb=prob_b(nivelgris);
+        %--- Se itera sobre el acumuladdo de a 
+        for k = 1:255
+            if acumb>prob_a(k)&& acumb<prob_a(k+1)
+                    b(i,j)=k;
+                    break;
+            end
+        end
+    end
+end
+figure(3)
+imshow(b);
 
 % --- Funciones del programa
 function [min, max] = limites_imagen(imagen)
