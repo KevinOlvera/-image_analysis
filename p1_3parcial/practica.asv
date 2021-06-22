@@ -1,75 +1,187 @@
-% imagen = imread ('imagen4fig.bmp');
-% imagen = imagen(:,:,1);
-% imgBin = imbinarize(imagen);
-% %imshow(imgBin);
-% [alto,ancho]=size(imgBin);
- 
-% imagen = [1 0 0 1 0 0;0 0 1 0 1 0;0 0 0 0 1 0;1 0 0 1 0 0;1 0 0 1 0 1];
-% imgBin = imbinarize(imagen);
-% [alto,ancho]=size(imgBin);
+imagen = imread ('imagen4figs.png');
+imagen = imagen(:,:,1);
 
+%imagen = [0 1 0 0 0 1;0 1 1 1 1 1;0 0 0 0 0 0;0 1 1 0 0 1];
 
+% 0 1 0 0 0 1 
+% 0 1 1 1 1 1 
+% 0 0 0 0 0 0
+% 0 1 1 0 0 1
+
+imgBin = imbinarize(imagen);
+%imshow(imgBin);
+[alto,ancho]=size(imgBin);
+%a b c
+%d e f 
+%g h i
+global imgAux;
 imgAux = zeros(alto,ancho);
-imgAux = imgBin;
-contadorImagenes=0;
-  
+
 for i=1:alto
-     for j =1:ancho
-         if imgBin(i,j)==1
-             valor = encontrarAdyacencia(i,j,imgAux);
-             if valor==0
-                %No hay pixeles adyacentes
-                contadorImagenes=contadorImagenes+1;
-                valor=contadorImagenes;
-             end
-             imgAux(i,j)=valor;
-          end
-      end
- end
-imgAux
-disp('En total se encontraron:');
-disp(contadorImagenes);
- 
-function valor = encontrarAdyacencia(fila,columna,imgAux)
-     %fila superior
-     valor0_0=verificar_indice(imgAux,fila-1,columna-1);    
-     valor0_1=verificar_indice(imgAux,fila-1,columna);    
-     valor0_2=verificar_indice(imgAux,fila-1,columna+1);    
-     
-     %fila central
-     valor0_3=verificar_indice(imgAux,fila,columna-1);    
-     valor0_5=verificar_indice(imgAux,fila,columna+1);    
-     
-     %fila inferior
-     valor0_6=verificar_indice(imgAux,fila+1,columna-1);    
-     valor0_7=verificar_indice(imgAux,fila+1,columna);    
-     valor0_8=verificar_indice(imgAux,fila+1,columna+1);  
-        
-     if valor0_0>0
-         valor=valor0_0;
-     elseif valor0_1>0
-         valor=valor0_1;
-     elseif valor0_2>0
-         valor=valor0_2;
-     elseif valor0_3>0
-         valor=valor0_3;
-     elseif valor0_5>0
-         valor=valor0_5;
-     elseif valor0_6>0
-         valor=valor0_6;
-     elseif valor0_7>0
-         valor=valor0_7;
-     elseif valor0_8>0
-         valor=valor0_8;
-     else
-         valor=0;
-     end
+    for j=1:ancho
+        if imgBin(i,j)==1
+            imgAux(i,j)=1;
+        end 
+    end
 end
- 
-function resultado = verificar_indice(valor,fila,columna)
+
+contadorImagenes=2;
+   
+for i=1:alto
+      for j =1:ancho
+         if imgAux(i,j)==1
+             findImg(i,j,contadorImagenes);
+             contadorImagenes=contadorImagenes+1;
+         end
+      end
+end
+%imgAux
+disp('En total se encontraron:');
+disp(contadorImagenes-2);
+
+
+rojo  =  zeros(alto,ancho);
+verde =  zeros(alto,ancho);
+azul  =  zeros(alto,ancho);
+
+for i=1:alto
+    for j=1:ancho
+        if imgAux(i,j)==2
+            rojo(i,j)=255;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==3
+            rojo(i,j)=0;
+            verde(i,j)=255;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==4
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=255;
+        elseif imgAux(i,j)==5
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==6
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==7
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==8
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==9
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        elseif imgAux(i,j)==10
+            rojo(i,j)=0;
+            verde(i,j)=0;
+            azul(i,j)=0;
+        end     
+    end
+end
+
+if contadorImagenes<2
+    print('Imagen 1 es Roja')
+end
+if contadorImagenes<3
+    print('Imagen 2 es Vede')
+end
+elseif contadorImagenes<4
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+elseif contadorImagenes<5
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+elseif contadorImagenes<6
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+elseif contadorImagenes<7
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+elseif contadorImagenes<8
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+    print('Imagen 1 es Verde')
+elseif contadorImagenes<9    
+
+elseif contadorImagenes<10
+
+elseif contadorImagenes<11
+
+end
+    
+imagen(:,:,1)=rojo;
+imagen(:,:,2)=verde;
+imagen(:,:,3)=azul;
+
+figure(3);
+imshow(imagen);
+
+function valor = findImg(x,y,val)
+    global imgAux;
+    
+    imgAux(x,y)=val;
+    
+    a = verificar_indice(x-1,y-1);
+    b = verificar_indice(x-1,y  );
+    c = verificar_indice(x-1,y+1);
+    d = verificar_indice(x  ,y-1);
+    f = verificar_indice(x  ,y+1);
+    g = verificar_indice(x+1,y-1);
+    h = verificar_indice(x+1,y  );
+    i = verificar_indice(x+1,y+1);
+    
+    if  a==1 
+        findImg(x-1,y-1,val);
+    end
+    if b==1 
+        findImg(x-1,y  ,val);
+    end
+    if c==1 
+        findImg(x-1,y+1,val);
+    end
+    if d==1 
+        findImg(x  ,y-1,val);
+    end
+    if f==1 
+        findImg(x  ,y+1,val);
+    end
+    if g==1 
+        findImg(x+1,y-1,val);
+    end
+    if h==1 
+        findImg(x+1,y  ,val);
+    end
+    if i==1    
+        findImg(x+1,y+1,val);
+    end   
+    
+end
+
+function resultado = verificar_indice(x,y)
+    global imgAux;
      try
-         resultado = valor(fila, columna);
+         resultado = imgAux(x, y);
      catch
          resultado = 0;
      end
- end
+end
