@@ -1,4 +1,4 @@
-imagen = imread ('imagen4fig.bmp');
+imagen = imread ('imagen4figs.bmp');
 figure(1)
 imshow(imagen);
 
@@ -40,7 +40,8 @@ for i=1:alto
 end
 %imgAux
 disp('Número de imágenes encontradas');
-disp(contadorImagenes-2);
+contadorImagenes=contadorImagenes-2;
+disp(contadorImagenes);
 
 rojo  =  zeros(alto,ancho);
 verde =  zeros(alto,ancho);
